@@ -34,6 +34,58 @@ const StatCard = ({ title, value, icon, color }) => (
   </div>
 );
 
+const ChartsDashboard = ({ workPlan, professors }) => {
+  const summaryByProfessor = professors.map(p => {
+    const professorPlan = workPlan.filter(wp => wp.professorId === p.id);
+    const totalMeta = professorPlan.reduce((acc, curr) => acc + curr.meta, 0);
+    const totalAchieved = professorPlan.reduce((acc, curr) => acc + curr.achieved, 0);
+    const progress = totalMeta > 0 ? (totalAchieved / totalMeta) * 100 : 0;
+    return { name: p.name, meta: totalMeta, logro: totalAchieved, avance: progress };
+  });
+
+  const summaryByCategory = Object.keys(productCategories).map(key => {
+      const categoryPlan = workPlan.filter(wp => wp.category === key);
+      return {
+          name: productCategories[key].split(' ').map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(' '),
+          meta: categoryPlan.reduce((acc, curr) => acc + curr.meta, 0),
+          logro: categoryPlan.reduce((acc, curr) => acc + curr.achieved, 0),
+      }
+  }).filter(c => c.meta > 0 || c.logro > 0);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="font-bold text-lg mb-4 text-gray-700">Avance por Profesor</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={summaryByProfessor} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} angle={-30} textAnchor="end" height={80} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="meta" fill="#8884d8" name="Meta" />
+            <Bar dataKey="logro" fill="#82ca9d" name="Logro Aprobado" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+         <h3 className="font-bold text-lg mb-4 text-gray-700">Metas vs Logros por Categoría</h3>
+          <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={summaryByCategory} layout="vertical" margin={{ top: 5, right: 20, left: 150, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis dataKey="name" type="category" tick={{ fontSize: 12, width: 140 }} width={150} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="meta" fill="#fca5a5" name="Meta" />
+                  <Bar dataKey="logro" fill="#6ee7b7" name="Logro Aprobado" />
+              </BarChart>
+          </ResponsiveContainer>
+      </div>
+    </div>
+  );
+};
+
 const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfessor }) => {
   const totalGlobalMeta = workPlan.reduce((acc, curr) => acc + curr.meta, 0);
   const totalGlobalAchieved = workPlan.reduce((acc, curr) => acc + curr.achieved, 0);
@@ -50,15 +102,6 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
   const profesoresVoluntariosNombres = ['Rosa Hernandez', 'Octavio Giraldo Castro', 'Wendy Gonzales', 'Silvia Noguera'];
   const profesoresConPlan = summaryByProfessor.filter(p => !profesoresVoluntariosNombres.includes(p.name));
   const profesoresVoluntarios = summaryByProfessor.filter(p => profesoresVoluntariosNombres.includes(p.name));
-
-  const summaryByCategory = Object.keys(productCategories).map(key => {
-      const categoryPlan = workPlan.filter(wp => wp.category === key);
-      return {
-          name: productCategories[key].split(' ').map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(' '),
-          meta: categoryPlan.reduce((acc, curr) => acc + curr.meta, 0),
-          logro: categoryPlan.reduce((acc, curr) => acc + curr.achieved, 0),
-      }
-  }).filter(c => c.meta > 0 || c.logro > 0);
 
   const summaryByType = workPlan.reduce((acc, item) => {
     if (!acc[item.type]) {
@@ -110,36 +153,7 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
         <StatCard title="Total Logros Aprobados" value={totalGlobalAchieved} icon={<CheckCircle className="text-white" />} color="bg-green-500" />
         <StatCard title="Avance General" value={`${globalProgress.toFixed(1)}%`} icon={<BarChart2 className="text-white" />} color="bg-purple-500" />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="font-bold text-lg mb-4 text-gray-700">Avance por Profesor</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={summaryByProfessor} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} angle={-30} textAnchor="end" height={80} />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="meta" fill="#8884d8" name="Meta" />
-              <Bar dataKey="logro" fill="#82ca9d" name="Logro Aprobado" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md">
-           <h3 className="font-bold text-lg mb-4 text-gray-700">Metas vs Logros por Categoría</h3>
-            <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={summaryByCategory} layout="vertical" margin={{ top: 5, right: 20, left: 150, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" tick={{ fontSize: 12, width: 140 }} width={150} />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="meta" fill="#fca5a5" name="Meta" />
-                    <Bar dataKey="logro" fill="#6ee7b7" name="Logro Aprobado" />
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
-      </div>
+      <ChartsDashboard workPlan={workPlan} professors={professors} />
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
             {renderProfessorTable(profesoresConPlan, "Profesores con Plan de Trabajo")}
@@ -210,6 +224,7 @@ const WorkPlanView = ({ professor, workPlan, tasks, onBack, userRole, onAddTask,
         <StatCard title="Logros Aprobados" value={totalAchieved} icon={<CheckCircle className="text-white" />} color="bg-green-500" />
         <StatCard title="Avance" value={`${progress.toFixed(1)}%`} icon={<BarChart2 className="text-white" />} color="bg-purple-500" />
       </div>
+      <ChartsDashboard workPlan={professorPlan} professors={[professor]} />
       <div>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-2xl font-bold text-gray-800">Plan de Trabajo y Productos</h3>
