@@ -47,6 +47,10 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
     return { name: p.name, meta: totalMeta, logro: totalAchieved, avance: progress };
   });
 
+  const profesoresVoluntariosNombres = ['Rosa Hernandez', 'Octavio Giraldo Castro', 'Wendy Gonzales', 'Silvia Noguera'];
+  const profesoresConPlan = summaryByProfessor.filter(p => !profesoresVoluntariosNombres.includes(p.name));
+  const profesoresVoluntarios = summaryByProfessor.filter(p => profesoresVoluntariosNombres.includes(p.name));
+
   const summaryByCategory = Object.keys(productCategories).map(key => {
       const categoryPlan = workPlan.filter(wp => wp.category === key);
       return {
@@ -65,6 +69,37 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
     return acc;
   }, {});
   const summaryByTypeList = Object.values(summaryByType);
+
+  const renderProfessorTable = (professorsList, title) => (
+    <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow-md mb-8">
+        <h3 className="font-bold text-lg mb-4 text-gray-700">{title}</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-gray-100"><th>Profesor</th><th>Meta</th><th>Logro</th><th>Avance</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              {professorsList.map((p, index) => (
+                <tr key={index} className="border-b hover:bg-gray-50">
+                  <td className="p-3 font-medium">{p.name}</td>
+                  <td className="p-3 text-center">{p.meta}</td>
+                  <td className="p-3 text-center">{p.logro}</td>
+                  <td className="p-3">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${p.avance}%` }}></div>
+                    </div>
+                    <span className="text-sm">{p.avance.toFixed(1)}%</span>
+                  </td>
+                  <td className="p-3">
+                    <button onClick={() => onSelectProfessor(professors.find(prof => prof.name === p.name))} className="text-blue-600 hover:underline">Ver Plan</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+    </div>
+  );
 
   return (
     <div className="space-y-8">
@@ -106,33 +141,9 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow-md">
-            <h3 className="font-bold text-lg mb-4 text-gray-700">Tabla de Seguimiento General</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="bg-gray-100"><th>Profesor</th><th>Meta</th><th>Logro</th><th>Avance</th><th>Acciones</th></tr>
-                </thead>
-                <tbody>
-                  {summaryByProfessor.map((p, index) => (
-                    <tr key={index} className="border-b hover:bg-gray-50">
-                      <td className="p-3 font-medium">{p.name}</td>
-                      <td className="p-3 text-center">{p.meta}</td>
-                      <td className="p-3 text-center">{p.logro}</td>
-                      <td className="p-3">
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
-                          <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${p.avance}%` }}></div>
-                        </div>
-                        <span className="text-sm">{p.avance.toFixed(1)}%</span>
-                      </td>
-                      <td className="p-3">
-                        <button onClick={() => onSelectProfessor(professors.find(prof => prof.name === p.name))} className="text-blue-600 hover:underline">Ver Plan</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+        <div className="lg:col-span-3">
+            {renderProfessorTable(profesoresConPlan, "Profesores con Plan de Trabajo")}
+            {renderProfessorTable(profesoresVoluntarios, "Profesores Voluntarios")}
              <button onClick={onAddProfessor} className="mt-4 flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                 <UserPlus className="mr-2 h-5 w-5" /> Añadir Profesor
               </button>
