@@ -71,7 +71,22 @@ const productCategoriesWithProducts = {
     },
     'PRODUCTOS ADICIONALES SOLICITADOS EN POA': {
         abbreviation: 'POA',
-        products: {}
+        products: {
+            'Productos Adicionales': [
+                'Actualización de currículos con producción de investigadores',
+                'Asignaturas con literatura guía producida por investigadores',
+                'Categorización de Grupos e Investigadores Convocatoria MINCIENCIAS',
+                'Participación en convocatoria de adjudicación de recursos (autosostenibilidad científica)',
+                'Coordinación administrativa de grupos y semilleros del programa/facultad',
+                'Participar en eventos regionales y nacionales de investigación con ponencias de semilleros',
+                'Generar contenidos publicables realizados por semilleros de investigación',
+                'Redes de conocimiento',
+                'Creación o actualización de semilleros',
+                'Proyectos de I+D+i',
+                'Capacitaciones dirigidas a docentes investigadores y estudiantes de semilleros.',
+                'Participar como evaluador en eventos científicos institucionales, nacionales y/o internacionales'
+            ]
+        }
     }
 };
 const initialWorkPlan = [
@@ -483,25 +498,19 @@ const PlanItemModal = ({ isOpen, onClose, onSubmit, planItemToEdit, professorId 
                 })?.[0];
                 setProductCategory(foundCategory || Object.keys(productCategoriesWithProducts)[0]);
 
-                if (foundCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
-                    const foundType = Object.entries(productCategoriesWithProducts[foundCategory || Object.keys(productCategoriesWithProducts)[0]].products).find(([type, products]) => {
-                        return products.includes(planItemToEdit.type);
-                    })?.[0];
-                    setProductType(foundType || Object.keys(productCategoriesWithProducts[foundCategory || Object.keys(productCategoriesWithProducts)[0]].products)[0]);
-                }
+                const foundType = Object.entries(productCategoriesWithProducts[foundCategory || Object.keys(productCategoriesWithProducts)[0]].products).find(([type, products]) => {
+                    return products.includes(planItemToEdit.type);
+                })?.[0];
+                setProductType(foundType || Object.keys(productCategoriesWithProducts[foundCategory || Object.keys(productCategoriesWithProducts)[0]].products)[0]);
 
                 setType(planItemToEdit.type);
                 setMeta(planItemToEdit.meta);
             } else {
                 const firstCategory = Object.keys(productCategoriesWithProducts)[0];
                 setProductCategory(firstCategory);
-                if (firstCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
-                    const firstType = Object.keys(productCategoriesWithProducts[firstCategory].products)[0];
-                    setProductType(firstType);
-                    setType(productCategoriesWithProducts[firstCategory].products[firstType]?.[0] || '');
-                } else {
-                    setType('');
-                }
+                const firstType = Object.keys(productCategoriesWithProducts[firstCategory].products)[0];
+                setProductType(firstType);
+                setType(productCategoriesWithProducts[firstCategory].products[firstType]?.[0] || '');
                 setMeta(1);
             }
         }
@@ -509,16 +518,12 @@ const PlanItemModal = ({ isOpen, onClose, onSubmit, planItemToEdit, professorId 
 
     useEffect(() => {
         if (isOpen && !planItemToEdit) {
-            if (productCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
-                const types = Object.keys(productCategoriesWithProducts[productCategory].products);
-                const firstType = types[0];
-                setProductType(firstType);
-                const products = productCategoriesWithProducts[productCategory].products[firstType];
-                if (products && products.length > 0) {
-                    setType(products[0]);
-                } else {
-                    setType('');
-                }
+            const types = Object.keys(productCategoriesWithProducts[productCategory].products);
+            const firstType = types[0];
+            setProductType(firstType);
+            const products = productCategoriesWithProducts[productCategory].products[firstType];
+            if (products && products.length > 0) {
+                setType(products[0]);
             } else {
                 setType('');
             }
@@ -526,7 +531,7 @@ const PlanItemModal = ({ isOpen, onClose, onSubmit, planItemToEdit, professorId 
     }, [productCategory, isOpen, planItemToEdit]);
 
     useEffect(() => {
-        if (isOpen && !planItemToEdit && productCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
+        if (isOpen && !planItemToEdit) {
             const products = productCategoriesWithProducts[productCategory].products[productType];
             if (products && products.length > 0) {
                 setType(products[0]);
@@ -559,13 +564,7 @@ const PlanItemModal = ({ isOpen, onClose, onSubmit, planItemToEdit, professorId 
                             ))}
                         </select>
                     </div>
-                    {productCategory === 'PRODUCTOS ADICIONALES SOLICITADOS EN POA' ? (
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Producto Adicional</label>
-                            <input type="text" value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
-                        </div>
-                    ) : (
-                        <>
+                    <>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Producto</label>
                                 <select value={productType} onChange={e => setProductType(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -583,7 +582,6 @@ const PlanItemModal = ({ isOpen, onClose, onSubmit, planItemToEdit, professorId 
                                 </select>
                             </div>
                         </>
-                    )}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad (Meta)</label>
                         <input type="number" min="1" value={meta} onChange={e => setMeta(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
