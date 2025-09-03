@@ -15,7 +15,65 @@ const initialProfessors = [
   { id: 9, name: 'Silvia Noguera', category: 'Investigador sin Categoría', cvlac: '32785239' },
   { id: 10, name: 'Carlos Rodríguez Arias', category: 'Investigador sin Categoría', cvlac: 'N/A' },
 ];
-const productCategories = { GNC: 'GENERACIÓN DE NUEVO CONOCIMIENTO', DTI: 'DESARROLLO TECNOLÓGICO E INNOVACIÓN', ASC: 'APROPIACIÓN SOCIAL DEL CONOCIMIENTO', FTH: 'FORMACIÓN DE TALENTO HUMANO', POA: 'PRODUCTOS ADICIONALES SOLICITADOS EN POA', };
+const productCategoriesWithProducts = {
+    'Generación de Nuevo Conocimiento': {
+        abbreviation: 'GNC',
+        products: {
+            'Artículos de investigación': ['ART_OPEN_A1', 'ART_A1', 'ART_OPEN_A2', 'ART_A2', 'ART_OPEN_B', 'ART_B', 'ART_OPEN_C', 'ART_C', 'ART_OPEN_D', 'ART_D'],
+            'Notas científicas': ['N_A1', 'N_A2', 'N_B', 'N_C', 'N_D'],
+            'Libros resultado de investigación': ['LIB_A1', 'LIB_A', 'LIB_B', 'LIB_C'],
+            'Capítulos en libro resultado de investigación': ['CAP_LIB_A1', 'CAP_LIB_A', 'CAP_LIB_B', 'CAP_LIB_C'],
+        }
+    },
+    'Desarrollo Tecnológico e Innovación': {
+        abbreviation: 'DTI',
+        products: {
+            'Productos tecnológicos patentados o en trámite (patentes/modelos)': ['PA1–MA1', 'PA2–MA2', 'PA3–MA3', 'PA4–MA4', 'PB1–MB1', 'PB2–MB2', 'PB3–MB3', 'PB4–MB4', 'PB5–MB5', 'PC–MC'],
+            'Variedades vegetales / razas y poblaciones': ['Variedades vegetales (VV_A1, VV_A2, VV_A3, VV_A4, VV_B1, VV_B2, VV_B3, VV_B4)', 'Nuevas razas animales (VA_A)', 'Poblaciones mejoradas (VA_B)'],
+            'Tecnológicos certificados/validados': ['Diseños industriales (DI_A, DI_B)', 'Esquemas de circuito integrado (ECI)', 'Software (SF)', 'Plantas piloto (PP)', 'Prototipos industriales (PI)', 'Signos distintivos (SD)', 'Productos nutracéuticos (PN)', 'Colecciones científicas (CC)', 'Nuevos registros científicos (NRC_A, NRC_B)'],
+            'Empresariales / innovación en la empresa': ['Secreto empresarial (SE)', 'Empresas de base tecnológica (EBT_A Spin-off, EBT_B Start-up)', 'Industrias creativas y culturales (ICC_A, ICC_B)', 'Innovaciones en gestión y comercialización (IG_A1, IG_A2, IG_B1, IG_B2)', 'Innovaciones en procesos/servicios (IPP)'],
+            'Regulación, normas y política técnica': ['RNL_A', 'RNL_B', 'RNR', 'RNT', 'RNPC', 'GMCF', 'MADV', 'PAU', 'PVE', 'AL', 'RNPL'],
+            'Consultoría/transferencia': ['Conceptos técnicos (CT)', 'Acuerdos de licencia de obras I+C (MR)'],
+        }
+    },
+    'Apropiación Social del Conocimiento': {
+        abbreviation: 'ASC',
+        products: {
+            'Procesos para solución de asuntos de interés social': ['FIS'],
+            'Procesos para insumos de política pública': ['GPP_A', 'GPP_B', 'GPP_C'],
+            'Procesos para fortalecimiento de cadenas productivas': ['FCP_A', 'FCP_B', 'FCP_C'],
+            'Procesos con Centros de Ciencia': ['TCCG_A', 'TCCG_B', 'TCCG_C', 'TCCG_D'],
+        }
+    },
+    'Divulgación Pública de la Ciencia': {
+        abbreviation: 'DPC',
+        products: {
+            'Eventos científicos con componente de apropiación': ['EC_A', 'EC_B'],
+            'Redes de conocimiento': ['RC_A', 'RC_B'],
+            'Talleres de creación': ['TC_A', 'TC_B', 'TC_C'],
+            'Eventos artísticos/arquitectura/diseño': ['ECA_A', 'ECA_B'],
+            'Working papers': ['WP'],
+            'Nuevas secuencias genéticas': ['NSG'],
+            'Ediciones de revistas/libros de divulgación': ['ERL'],
+            'Informes': ['IFI (finales de investigación)', 'INF (técnicos)'],
+            'Consultorías': ['CON_CT (científico-tecnológicas)', 'CON_AAD (arte/arquitectura/diseño)'],
+            'Productos comunicativos (rutas de circulación)': ['Publicaciones editoriales no especializadas (PEE_A1, PEE_A2, PEE_B1, PEE_B2, PEE_C1, PEE_C2)', 'Contenido digital (PCD_A1, PCD_A2, PCD_B1, PCD_B2, PCD_C1, PCD_C2)', 'Transmedia (TRM_A1, TRM_A2, TRM_B1, TRM_B2, TRM_C1, TRM_C2)', 'Desarrollos Web (DW_A1, DW_A2, DW_B1, DW_B2, DW_C1, DW_C2)'],
+            'Producción bibliográfica en ASC/Divulgación': ['Libros de formación (LIB_FOR1, LIB_FOR2, LIB_FOR3)', 'Boletines divulgativos (BOL)', 'Libros de divulgación/compilaciones (LIB_DIV)', 'Generación de contenidos (GC)', 'Manuales y guías especializadas (MAN_GUI)', 'Libros de creación (piloto) (LIB_CRE)'],
+        }
+    },
+    'Formación de Recurso Humano para CTeI': {
+        abbreviation: 'FTH',
+        products: {
+            'Dirección de tesis y trabajos': ['Doctorado (TD_A, TD_B)', 'Maestría (TM_A, TM_B)', 'Pregrado (TP_A, TP_B)'],
+            'Proyectos con financiación': ['Investigación y Desarrollo (PID_A, PID_B, PID_C)', 'Investigación-Creación (PIC_A, PIC_B, PIC_C)', 'I+D+i con empresas/jóvenes (PF_A, PF_B)', 'Extensión y responsabilidad social (PE)'],
+            'Apoyos académicos': ['Creación de programas/cursos (AP_A, AP_B, AP_C, AP_D)', 'Programa Ondas (APO)'],
+        }
+    },
+    'PRODUCTOS ADICIONALES SOLICITADOS EN POA': {
+        abbreviation: 'POA',
+        products: {}
+    }
+};
 const initialWorkPlan = [
   { id: 1, professorId: 1, category: 'GNC', type: 'Someter Artículo Tipo TOP', meta: 1, achieved: 1 }, { id: 2, professorId: 1, category: 'GNC', type: 'PUBLICAR Libro de investigación', meta: 1, achieved: 0 }, { id: 3, professorId: 1, category: 'GNC', type: 'Someter Capítulo del libro', meta: 1, achieved: 1 }, { id: 4, professorId: 1, category: 'ASC', type: 'Ponencia Nacional o Internacional', meta: 1, achieved: 1 }, { id: 5, professorId: 1, category: 'FTH', type: 'Trabajos dirigidos/tutorías PREGRADO', meta: 4, achieved: 3 }, { id: 6, professorId: 1, category: 'POA', type: 'Categorización de Grupos e Investigadores', meta: 1, achieved: 1 }, { id: 7, professorId: 2, category: 'GNC', type: 'Someter Artículo Tipo TOP', meta: 1, achieved: 1 }, { id: 8, professorId: 2, category: 'FTH', type: 'Trabajos dirigidos/tutorías MAESTRÍA', meta: 2, achieved: 2 }, { id: 9, professorId: 2, category: 'POA', type: 'Redes de conocimiento', meta: 1, achieved: 1 }, { id: 10, professorId: 3, category: 'GNC', type: 'PUBLICAR Libro de investigación', meta: 1, achieved: 0 }, { id: 11, professorId: 3, category: 'DTI', type: 'Prototipo', meta: 1, achieved: 0 }, { id: 12, professorId: 3, category: 'POA', type: 'Proyectos de I+D+i', meta: 1, achieved: 1 }, { id: 13, professorId: 4, category: 'GNC', type: 'Someter Artículo Tipo TOP', meta: 1, achieved: 3 }, { id: 14, professorId: 4, category: 'GNC', type: 'PUBLICAR artículo', meta: 1, achieved: 1 }, { id: 15, professorId: 10, category: 'GNC', type: 'Someter Artículo Tipo TOP', meta: 1, achieved: 0 }, { id: 16, professorId: 10, category: 'DTI', type: 'Prototipo', meta: 1, achieved: 0 }, { id: 17, professorId: 10, category: 'ASC', type: 'Ponencia Nacional o Internacional', meta: 1, achieved: 0 },
 ];
@@ -25,11 +83,11 @@ const initialTasks = [
 
 // --- COMPONENTES ---
 const StatCard = ({ title, value, icon, color }) => (
-  <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex items-center">
     <div className={`p-3 rounded-full mr-4 ${color}`}>{icon}</div>
     <div>
-      <p className="text-sm text-gray-500">{title}</p>
-      <p className="text-2xl font-bold text-gray-800">{value}</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
+      <p className="text-2xl font-bold text-gray-800 dark:text-white">{value}</p>
     </div>
   </div>
 );
@@ -43,10 +101,10 @@ const ChartsDashboard = ({ workPlan, professors }) => {
     return { name: p.name, meta: totalMeta, logro: totalAchieved, avance: progress };
   });
 
-  const summaryByCategory = Object.keys(productCategories).map(key => {
-      const categoryPlan = workPlan.filter(wp => wp.category === key);
+  const summaryByCategory = Object.keys(productCategoriesWithProducts).map(key => {
+      const categoryPlan = workPlan.filter(wp => wp.category === productCategoriesWithProducts[key].abbreviation);
       return {
-          name: productCategories[key].split(' ').map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(' '),
+          name: key,
           meta: categoryPlan.reduce((acc, curr) => acc + curr.meta, 0),
           logro: categoryPlan.reduce((acc, curr) => acc + curr.achieved, 0),
       }
@@ -54,8 +112,8 @@ const ChartsDashboard = ({ workPlan, professors }) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="font-bold text-lg mb-4 text-gray-700">Avance por Profesor</h3>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        <h3 className="font-bold text-lg mb-4 text-gray-700 dark:text-gray-300">Avance por Profesor</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={summaryByProfessor} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -68,8 +126,8 @@ const ChartsDashboard = ({ workPlan, professors }) => {
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <div className="bg-white p-6 rounded-lg shadow-md">
-         <h3 className="font-bold text-lg mb-4 text-gray-700">Metas vs Logros por Categoría</h3>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+         <h3 className="font-bold text-lg mb-4 text-gray-700 dark:text-gray-300">Metas vs Logros por Categoría</h3>
           <ResponsiveContainer width="100%" height={300}>
               <BarChart data={summaryByCategory} layout="vertical" margin={{ top: 5, right: 20, left: 150, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -114,21 +172,21 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
   const summaryByTypeList = Object.values(summaryByType);
 
   const renderProfessorTable = (professorsList, title) => (
-    <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow-md mb-8">
-        <h3 className="font-bold text-lg mb-4 text-gray-700">{title}</h3>
+    <div className="lg:col-span-3 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-8">
+        <h3 className="font-bold text-lg mb-4 text-gray-700 dark:text-gray-300">{title}</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-gray-100"><th>Profesor</th><th>Meta</th><th>Logro</th><th>Avance</th><th>Acciones</th></tr>
+              <tr className="bg-gray-100 dark:bg-gray-700"><th>Profesor</th><th>Meta</th><th>Logro</th><th>Avance</th><th>Acciones</th></tr>
             </thead>
             <tbody>
               {professorsList.map((p, index) => (
-                <tr key={index} className="border-b hover:bg-gray-50">
+                <tr key={index} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <td className="p-3 font-medium">{p.name}</td>
                   <td className="p-3 text-center">{p.meta}</td>
                   <td className="p-3 text-center">{p.logro}</td>
                   <td className="p-3">
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                       <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${p.avance}%` }}></div>
                     </div>
                     <span className="text-sm">{p.avance.toFixed(1)}%</span>
@@ -146,7 +204,7 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
 
   return (
     <div className="space-y-8">
-      <h2 className="text-3xl font-bold text-gray-800">Dashboard Vicerrectoría</h2>
+      <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Dashboard Vicerrectoría</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard title="Total Profesores" value={professors.length} icon={<Users className="text-white" />} color="bg-blue-500" />
         <StatCard title="Total Metas POA" value={totalGlobalMeta} icon={<Target className="text-white" />} color="bg-yellow-500" />
@@ -162,16 +220,16 @@ const AdminDashboard = ({ professors, workPlan, onSelectProfessor, onAddProfesso
                 <UserPlus className="mr-2 h-5 w-5" /> Añadir Profesor
               </button>
         </div>
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
-            <h3 className="font-bold text-lg mb-4 text-gray-700">Detalle por Tipo de Producto</h3>
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 className="font-bold text-lg mb-4 text-gray-700 dark:text-gray-300">Detalle por Tipo de Producto</h3>
             <div className="overflow-auto h-96">
                 <table className="w-full text-left">
                     <thead>
-                        <tr className="bg-gray-100 sticky top-0"><th>Tipo de Producto</th><th>Meta</th><th>Logro</th></tr>
+                        <tr className="bg-gray-100 dark:bg-gray-700 sticky top-0"><th>Tipo de Producto</th><th>Meta</th><th>Logro</th></tr>
                     </thead>
                     <tbody>
                         {summaryByTypeList.map(item => (
-                            <tr key={item.type} className="border-b hover:bg-gray-50">
+                            <tr key={item.type} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td className="p-2 text-sm">{item.type}</td>
                                 <td className="p-2 text-center">{item.meta}</td>
                                 <td className="p-2 text-center">{item.logro}</td>
@@ -207,17 +265,18 @@ const WorkPlanView = ({ professor, workPlan, tasks, onBack, userRole, onAddTask,
   const progress = totalMeta > 0 ? (totalAchieved / totalMeta) * 100 : 0;
   
   const groupedPlan = professorPlan.reduce((acc, item) => {
-    (acc[item.category] = acc[item.category] || []).push(item);
+    const categoryName = Object.keys(productCategoriesWithProducts).find(key => productCategoriesWithProducts[key].abbreviation === item.category);
+    (acc[categoryName] = acc[categoryName] || []).push(item);
     return acc;
   }, {});
 
   return (
     <div className="space-y-6">
       {userRole === 'admin' && <button onClick={onBack} className="text-blue-600 hover:underline mb-4">&larr; Volver al Dashboard</button>}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-gray-800">{professor.name}</h2>
-        <p className="text-gray-500">{professor.category}</p>
-        <p className="text-gray-500">CVLAC ID: {professor.cvlac}</p>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white">{professor.name}</h2>
+        <p className="text-gray-500 dark:text-gray-400">{professor.category}</p>
+        <p className="text-gray-500 dark:text-gray-400">CVLAC ID: {professor.cvlac}</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard title="Meta Total" value={totalMeta} icon={<Target className="text-white" />} color="bg-yellow-500" />
@@ -227,18 +286,18 @@ const WorkPlanView = ({ professor, workPlan, tasks, onBack, userRole, onAddTask,
       <ChartsDashboard workPlan={professorPlan} professors={[professor]} />
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-2xl font-bold text-gray-800">Plan de Trabajo y Productos</h3>
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-white">Plan de Trabajo y Productos</h3>
           {userRole === 'admin' && (
             <button onClick={onAddPlanItem} className="flex items-center bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
               <FilePlus className="mr-2 h-5 w-5" /> Añadir Meta
             </button>
           )}
         </div>
-        {Object.keys(groupedPlan).length === 0 && <p className="text-gray-500 bg-white p-4 rounded-lg shadow-md">No hay metas asignadas.</p>}
+        {Object.keys(groupedPlan).length === 0 && <p className="text-gray-500 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">No hay metas asignadas.</p>}
         {Object.keys(groupedPlan).map(categoryKey => (
-          <div key={categoryKey} className="mb-4 bg-white rounded-lg shadow-md overflow-hidden">
-            <button onClick={() => toggleCategory(categoryKey)} className="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200">
-              <h4 className="font-bold text-lg text-gray-700">{productCategories[categoryKey]}</h4>
+          <div key={categoryKey} className="mb-4 bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+            <button onClick={() => toggleCategory(categoryKey)} className="w-full flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
+              <h4 className="font-bold text-lg text-gray-700 dark:text-gray-300">{categoryKey}</h4>
               {expandedCategories[categoryKey] ? <ChevronUp /> : <ChevronDown />}
             </button>
             {expandedCategories[categoryKey] && (
@@ -246,11 +305,11 @@ const WorkPlanView = ({ professor, workPlan, tasks, onBack, userRole, onAddTask,
                 {groupedPlan[categoryKey].map(planItem => {
                   const itemTasks = tasks.filter(t => t.planId === planItem.id);
                   return (
-                    <div key={planItem.id} className="border-b pb-4 last:border-b-0 last:pb-0">
+                    <div key={planItem.id} className="border-b dark:border-gray-700 pb-4 last:border-b-0 last:pb-0">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-semibold text-gray-800">{planItem.type}</p>
-                          <p className="text-sm text-gray-500">Meta: {planItem.meta} | Aprobados: {planItem.achieved}</p>
+                          <p className="font-semibold text-gray-800 dark:text-white">{planItem.type}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">Meta: {planItem.meta} | Aprobados: {planItem.achieved}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           {userRole === 'professor' && (
@@ -267,9 +326,9 @@ const WorkPlanView = ({ professor, workPlan, tasks, onBack, userRole, onAddTask,
                         </div>
                       </div>
                       {itemTasks.length > 0 && (
-                        <div className="mt-2 space-y-3 pl-4 border-l-2 border-gray-200">
+                        <div className="mt-2 space-y-3 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
                           {itemTasks.map(task => (
-                            <div key={task.id} className="p-3 bg-gray-50 rounded-md">
+                            <div key={task.id} className="p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
                                 <div className="flex justify-between items-center">
                                     <p className="font-medium">{task.title}</p>
                                     <TaskStatusBadge status={task.status} />
@@ -342,28 +401,28 @@ const TaskModal = ({ isOpen, onClose, planItem, onSubmit }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-            <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-lg">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold text-gray-800">Cargar Nuevo Logro</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Cargar Nuevo Logro</h2>
                     <button onClick={onClose}><X className="h-6 w-6 text-gray-500" /></button>
                 </div>
-                <p className="mb-4 text-gray-600">Para el producto: <span className="font-semibold">{planItem?.type}</span></p>
+                <p className="mb-4 text-gray-600 dark:text-gray-300">Para el producto: <span className="font-semibold">{planItem?.type}</span></p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Título del Producto/Logro</label>
-                        <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Título del Producto/Logro</label>
+                        <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">URL de Evidencia (Opcional)</label>
-                        <input type="url" value={url} onChange={e => setUrl(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">URL de Evidencia (Opcional)</label>
+                        <input type="url" value={url} onChange={e => setUrl(e.target.value)} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Cargar Evidencia (Archivo)</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cargar Evidencia (Archivo)</label>
                         <input type="file" onChange={e => setEvidenceFile(e.target.files[0])} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Observaciones</label>
-                        <textarea value={observations} onChange={e => setObservations(e.target.value)} rows="3" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Observaciones</label>
+                        <textarea value={observations} onChange={e => setObservations(e.target.value)} rows="3" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
                     </div>
                     <div className="flex justify-end gap-4">
                         <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
@@ -389,14 +448,14 @@ const RejectionModal = ({ isOpen, onClose, onSubmit }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-            <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg">
-                <h2 className="text-2xl font-bold mb-4">Motivo del Rechazo</h2>
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-lg">
+                <h2 className="text-2xl font-bold mb-4 dark:text-white">Motivo del Rechazo</h2>
                 <form onSubmit={handleSubmit}>
                     <textarea 
                         value={reason} 
                         onChange={e => setReason(e.target.value)} 
                         rows="4" 
-                        className="w-full border border-gray-300 rounded-md p-2" 
+                        className="w-full border border-gray-300 rounded-md p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
                         placeholder="Por favor, explique por qué se rechaza este logro..."
                         required
                     ></textarea>
@@ -411,26 +470,134 @@ const RejectionModal = ({ isOpen, onClose, onSubmit }) => {
 };
 
 const PlanItemModal = ({ isOpen, onClose, onSubmit, planItemToEdit, professorId }) => {
-    const [category, setCategory] = useState('GNC');
+    const [productCategory, setProductCategory] = useState(Object.keys(productCategoriesWithProducts)[0]);
+    const [productType, setProductType] = useState(Object.keys(productCategoriesWithProducts[Object.keys(productCategoriesWithProducts)[0]].products)[0]);
     const [type, setType] = useState('');
     const [meta, setMeta] = useState(1);
+
     useEffect(() => {
         if (isOpen) {
-            if (planItemToEdit) { setCategory(planItemToEdit.category); setType(planItemToEdit.type); setMeta(planItemToEdit.meta); } 
-            else { setCategory('GNC'); setType(''); setMeta(1); }
+            if (planItemToEdit) {
+                const foundCategory = Object.entries(productCategoriesWithProducts).find(([cat, data]) => {
+                    return Object.values(data.products).flat().includes(planItemToEdit.type);
+                })?.[0];
+                setProductCategory(foundCategory || Object.keys(productCategoriesWithProducts)[0]);
+
+                if (foundCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
+                    const foundType = Object.entries(productCategoriesWithProducts[foundCategory || Object.keys(productCategoriesWithProducts)[0]].products).find(([type, products]) => {
+                        return products.includes(planItemToEdit.type);
+                    })?.[0];
+                    setProductType(foundType || Object.keys(productCategoriesWithProducts[foundCategory || Object.keys(productCategoriesWithProducts)[0]].products)[0]);
+                }
+
+                setType(planItemToEdit.type);
+                setMeta(planItemToEdit.meta);
+            } else {
+                const firstCategory = Object.keys(productCategoriesWithProducts)[0];
+                setProductCategory(firstCategory);
+                if (firstCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
+                    const firstType = Object.keys(productCategoriesWithProducts[firstCategory].products)[0];
+                    setProductType(firstType);
+                    setType(productCategoriesWithProducts[firstCategory].products[firstType]?.[0] || '');
+                } else {
+                    setType('');
+                }
+                setMeta(1);
+            }
         }
     }, [planItemToEdit, isOpen]);
+
+    useEffect(() => {
+        if (isOpen && !planItemToEdit) {
+            if (productCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
+                const types = Object.keys(productCategoriesWithProducts[productCategory].products);
+                const firstType = types[0];
+                setProductType(firstType);
+                const products = productCategoriesWithProducts[productCategory].products[firstType];
+                if (products && products.length > 0) {
+                    setType(products[0]);
+                } else {
+                    setType('');
+                }
+            } else {
+                setType('');
+            }
+        }
+    }, [productCategory, isOpen, planItemToEdit]);
+
+    useEffect(() => {
+        if (isOpen && !planItemToEdit && productCategory !== 'PRODUCTOS ADICIONALES SOLICITADOS EN POA') {
+            const products = productCategoriesWithProducts[productCategory].products[productType];
+            if (products && products.length > 0) {
+                setType(products[0]);
+            } else {
+                setType('');
+            }
+        }
+    }, [productType, isOpen, planItemToEdit]);
+
     if (!isOpen) return null;
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const planData = { id: planItemToEdit ? planItemToEdit.id : Date.now(), professorId, category, type, meta: Number(meta), achieved: planItemToEdit ? planItemToEdit.achieved : 0 };
+        const categoryAbbreviation = productCategoriesWithProducts[productCategory].abbreviation;
+        const planData = { id: planItemToEdit ? planItemToEdit.id : Date.now(), professorId, category: categoryAbbreviation, type, meta: Number(meta), achieved: planItemToEdit ? planItemToEdit.achieved : 0 };
         onSubmit(planData, !!planItemToEdit);
         onClose();
     };
+
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4"><div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg"><h2 className="text-2xl font-bold mb-4">{planItemToEdit ? 'Editar Meta' : 'Añadir Nueva Meta'}</h2><form onSubmit={handleSubmit} className="space-y-4"><div><label className="block text-sm font-medium text-gray-700">Categoría del Producto</label><select value={category} onChange={e => setCategory(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2">{Object.entries(productCategories).map(([key, value]) => (<option key={key} value={key}>{value}</option>))}</select></div><div><label className="block text-sm font-medium text-gray-700">Tipo de Producto/Meta</label><input type="text" value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required /></div><div><label className="block text-sm font-medium text-gray-700">Cantidad (Meta)</label><input type="number" min="1" value={meta} onChange={e => setMeta(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required /></div><div className="flex justify-end gap-4"><button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 rounded-md">Cancelar</button><button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">{planItemToEdit ? 'Actualizar Meta' : 'Añadir Meta'}</button></div></form></div></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-lg">
+                <h2 className="text-2xl font-bold mb-4 dark:text-white">{planItemToEdit ? 'Editar Meta' : 'Añadir Nueva Meta'}</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoría de Producto</label>
+                        <select value={productCategory} onChange={e => setProductCategory(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            {Object.keys(productCategoriesWithProducts).map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </select>
+                    </div>
+                    {productCategory === 'PRODUCTOS ADICIONALES SOLICITADOS EN POA' ? (
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Producto Adicional</label>
+                            <input type="text" value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
+                        </div>
+                    ) : (
+                        <>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Producto</label>
+                                <select value={productType} onChange={e => setProductType(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                    {Object.keys(productCategoriesWithProducts[productCategory].products).map(type => (
+                                        <option key={type} value={type}>{type}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Producto</label>
+                                <select value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                                    {productCategoriesWithProducts[productCategory].products[productType]?.map(product => (
+                                        <option key={product} value={product}>{product}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </>
+                    )}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad (Meta)</label>
+                        <input type="number" min="1" value={meta} onChange={e => setMeta(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required />
+                    </div>
+                    <div className="flex justify-end gap-4">
+                        <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
+                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">{planItemToEdit ? 'Actualizar Meta' : 'Añadir Meta'}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
+
 const ProfessorModal = ({ isOpen, onClose, onSubmit }) => {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('Investigador sin Categoría');
@@ -439,7 +606,7 @@ const ProfessorModal = ({ isOpen, onClose, onSubmit }) => {
     const handleSubmit = (e) => { e.preventDefault(); onSubmit({ id: Date.now(), name, category, cvlac }); onClose(); };
     const handleClose = () => { setName(''); setCategory('Investigador sin Categoría'); setCvlac(''); onClose(); }
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4"><div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg"><h2 className="text-2xl font-bold mb-4">Añadir Nuevo Profesor</h2><form onSubmit={handleSubmit} className="space-y-4"><div><label className="block text-sm font-medium text-gray-700">Nombre Completo</label><input type="text" value={name} onChange={e => setName(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required /></div><div><label className="block text-sm font-medium text-gray-700">Categoría Minciencias</label><select value={category} onChange={e => setCategory(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2"><option>Investigador Senior</option><option>Investigador Asociado</option><option>Investigador Junior</option><option>Investigador sin Categoría</option></select></div><div><label className="block text-sm font-medium text-gray-700">ID CvLAC</label><input type="text" value={cvlac} onChange={e => setCvlac(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" /></div><div className="flex justify-end gap-4"><button type="button" onClick={handleClose} className="px-4 py-2 bg-gray-200 rounded-md">Cancelar</button><button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">Añadir Profesor</button></div></form></div></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4"><div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-lg"><h2 className="text-2xl font-bold mb-4 dark:text-white">Añadir Nuevo Profesor</h2><form onSubmit={handleSubmit} className="space-y-4"><div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre Completo</label><input type="text" value={name} onChange={e => setName(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required /></div><div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoría Minciencias</label><select value={category} onChange={e => setCategory(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"><option>Investigador Senior</option><option>Investigador Asociado</option><option>Investigador Junior</option><option>Investigador sin Categoría</option></select></div><div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300">ID CvLAC</label><input type="text" value={cvlac} onChange={e => setCvlac(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" /></div><div className="flex justify-end gap-4"><button type="button" onClick={handleClose} className="px-4 py-2 bg-gray-200 rounded-md">Cancelar</button><button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">Añadir Profesor</button></div></form></div></div>
     );
 };
 
@@ -451,6 +618,15 @@ export default function App() {
   const [workPlan, setWorkPlan] = useState(initialWorkPlan);
   const [tasks, setTasks] = useState(initialTasks);
   const [currentProfessorId, setCurrentProfessorId] = useState(initialProfessors.length > 0 ? initialProfessors[0].id : null);
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
   const [isPlanItemModalOpen, setPlanItemModalOpen] = useState(false);
@@ -540,30 +716,33 @@ export default function App() {
   };
   
   return (
-    <div className="bg-gray-50 min-h-screen font-sans">
-      <header className="bg-white shadow p-4 text-xl font-bold text-gray-800">
+    <div className="bg-gray-50 min-h-screen font-sans dark:bg-gray-900">
+      <header className="bg-white shadow p-4 text-xl font-bold text-gray-800 dark:bg-gray-800 dark:text-white">
         Plataforma de seguimiento grupo INVENTIA
       </header>
-      <header className="bg-white shadow-md p-4 flex justify-between items-center">
+      <header className="bg-white shadow-md p-4 flex justify-between items-center dark:bg-gray-800">
         <div className="flex items-center">
             <svg className="h-8 w-8 text-blue-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-            <h1 className="text-2xl font-bold text-gray-800">Seguimiento POA Investigación</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Seguimiento POA Investigación</h1>
         </div>
         <div className="flex items-center">
+          <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="mr-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
           <div className="flex items-center">
-            <span className="mr-4 text-gray-600">Vista como:</span>
-            <select value={userRole} onChange={(e) => {setUserRole(e.target.value); setSelectedProfessor(null);}} className="bg-white border border-gray-300 rounded-md p-2">
+            <span className="mr-4 text-gray-600 dark:text-gray-300">Vista como:</span>
+            <select value={userRole} onChange={(e) => {setUserRole(e.target.value); setSelectedProfessor(null);}} className="bg-white border border-gray-300 rounded-md p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               <option value="admin">Vicerrectoría (Admin)</option>
               <option value="professor">Profesor</option>
             </select>
           </div>
           {userRole === 'professor' && (
             <div className="flex items-center ml-4">
-              <span className="mr-4 text-gray-600">Profesor:</span>
+              <span className="mr-4 text-gray-600 dark:text-gray-300">Profesor:</span>
               <select 
                 value={currentProfessorId || ''} 
                 onChange={(e) => setCurrentProfessorId(Number(e.target.value))} 
-                className="bg-white border border-gray-300 rounded-md p-2 w-48"
+                className="bg-white border border-gray-300 rounded-md p-2 w-48 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
                 {professors.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
